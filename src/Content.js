@@ -38,27 +38,35 @@ const Content = () => {
 
   return (
     <main>
-        <ul>
-            {items.map((item) => (
-                <li className='item' key={item.id}>
-                    <input
-                        type="checkbox"
-                        onChange={() => handleCheck(item.id)}
-                        checked={item.checked}
-                    />
-                    <label
-                        onDoubleClick={() => handleCheck(item.id)}
-                        // If the item is checked, cross out the label.
-                        style={(item.checked) ? { textDecoration:'line-through' } : null }
-                    >{item.item}</label>
-                    <FaTrashAlt
-                        onClick={() => handleDelete(item.id)}
-                        role="button"
-                        tabIndex="0"
-                    />
-                </li>
-            ))}
-        </ul>
+        {/* If there are items in the list (if it has a length not equal to 0), Show the list of items */}
+        { items.length ? (
+            <ul>
+                {items.map((item) => (
+                    <li className='item' key={item.id}>
+                        <input
+                            type="checkbox"
+                            onChange={() => handleCheck(item.id)}
+                            checked={item.checked}
+                        />
+                        <label
+                            onDoubleClick={() => handleCheck(item.id)}
+                            // If the item is checked, cross out the label.
+                            style={(item.checked) ? { textDecoration:'line-through' } : null }
+                        >{item.item}</label>
+                        <FaTrashAlt
+                            onClick={() => handleDelete(item.id)}
+                            role="button"
+                            tabIndex="0"
+                        />
+                    </li>
+                ))}
+            </ul>
+            // If the list is empty, show the following message
+        ) : (
+            <p
+                style={{ marginTop: '2rem' }}
+            >There are no items in the shopping list.</p>
+        )}
     </main>
   )
 }
