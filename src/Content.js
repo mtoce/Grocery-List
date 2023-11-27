@@ -21,6 +21,21 @@ const Content = () => {
     ]
     const [items, setItems] = useState(itemsArray)
 
+    const handleCheck = (id) => {
+        // Recreate the list of items from default state by checking if an item is checked by the user. Swap the checked status if it is checked and return the same item if it is not checked.
+        const listItems = items.map((item) => item.id === id ? { ...item, checked: !item.checked } : item)
+        setItems(listItems)
+        // Save the state of the item list to local storage for use later (instead of going back to default state).
+        localStorage.setItem('shoppinglist', JSON.stringify(listItems))
+    }
+
+    const handleDelete = (id) => {
+        // console.log(id)
+        const listItems = items.filter((item) => item.id !== id)
+        setItems(listItems)
+        localStorage.setItem('shoppinglist', JSON.stringify(listItems))
+    }
+
   return (
     <main>
         <ul>
@@ -28,12 +43,18 @@ const Content = () => {
                 <li className='item' key={item.id}>
                     <input
                         type="checkbox"
+                        onChange={() => handleCheck(item.id)}
                         checked={item.checked}
                     />
-                    <label>{item.item}</label>
-                    <FaTrashAlt 
-                        role="button" 
-                        tabIndex="0" 
+                    <label
+                        onDoubleClick={() => handleCheck(item.id)}
+                        // If the item is checked, cross out the label.
+                        style={(item.checked) ? { textDecoration:'line-through' } : null }
+                    >{item.item}</label>
+                    <FaTrashAlt
+                        onClick={() => handleDelete(item.id)}
+                        role="button"
+                        tabIndex="0"
                     />
                 </li>
             ))}
