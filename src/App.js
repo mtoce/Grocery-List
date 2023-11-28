@@ -2,6 +2,7 @@ import Header from './Header';
 import Content from './Content';
 import Footer from './Footer';
 import AddItem from './AddItem';
+import SearchItem from './SearchItem';
 import { useState } from 'react';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
   const shoppingList = JSON.parse(localStorage.getItem('shoppinglist'));
   const [items, setItems] = useState(shoppingList)
   const [newItem, setNewItem] = useState('')
+  const [search, setSearch] = useState('')
 
   const setAndSaveItems = (newItems) => {
     setItems(newItems)
@@ -51,6 +53,7 @@ function App() {
     addItem(newItem);
     setNewItem('');
   }
+
   const handleDelete = (id) => {
     // console.log(id)
     const listItems = items.filter((item) => item.id !== id)
@@ -64,6 +67,10 @@ function App() {
         newItem={newItem}
         setNewItem={setNewItem}
         handleSubmit={handleSubmit}
+      />
+      <SearchItem 
+        search={search}
+        setSearch={setSearch}
       />
       <Content 
         items={items}
