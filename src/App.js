@@ -54,6 +54,13 @@ function App() {
     setNewItem('');
   }
 
+  // const handleSearch = (e) => {
+  //   e.preventDefault();
+  //   if (!e.target.value) return;
+  //   const listItems = items.filter((item) => item.item.contains(e.target.value))
+  //   setAndSaveItems(listItems);
+  // }
+
   const handleDelete = (id) => {
     // console.log(id)
     const listItems = items.filter((item) => item.id !== id)
@@ -73,7 +80,7 @@ function App() {
         setSearch={setSearch}
       />
       <Content 
-        items={items}
+        items={items.filter(item => ((item.item).toLowerCase()).includes(search.toLowerCase()))}
         setItems={setItems}
         handleCheck={handleCheck}
         handleDelete={handleDelete}
