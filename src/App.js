@@ -6,25 +6,7 @@ import SearchItem from './SearchItem';
 import { useState } from 'react';
 
 function App() {
-  // const itemsArray = [
-  //   {
-  //       id: 1,
-  //       checked: false,
-  //       item: "One half pound bag of Cocoa Covered Almonds Unsalted",
-  //   },
-  //   {
-  //       id: 2,
-  //       checked: false,
-  //       item: "Item 2",
-  //   },
-  //   {
-  //       id: 3,
-  //       checked: false,
-  //       item: "Item 3",
-  //   }
-  // ]
-  const shoppingList = JSON.parse(localStorage.getItem('shoppinglist'));
-  const [items, setItems] = useState(shoppingList)
+  const [items, setItems] = useState([])
   const [newItem, setNewItem] = useState('')
   const [search, setSearch] = useState('')
 
