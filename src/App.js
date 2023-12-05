@@ -3,30 +3,31 @@ import Content from './Content';
 import Footer from './Footer';
 import AddItem from './AddItem';
 import SearchItem from './SearchItem';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function App() {
+
+  const API_URL = 'http://localhost:3500/items'
+  const shoppingList = JSON.parse(localStorage.getItem('shoppinglist'))
   const [items, setItems] = useState([])
   const [newItem, setNewItem] = useState('')
   const [search, setSearch] = useState('')
 
-  const setAndSaveItems = (newItems) => {
-    setItems(newItems)
-    localStorage.setItem('shoppinglist', JSON.stringify(newItems))
-  }
+  useEffect(() => {
+    localStorage.setItem('shoppinglist', JSON.stringify(items))
+  }, [items])
 
   const addItem = (item) => {
     const id = items.length ? items[items.length - 1].id + 1 : 1;
     const myNewItem = { id, checked: false, item };
     const listItems = [...items, myNewItem]
-    setAndSaveItems(listItems);
-
+    setItems(listItems);
   }
 
   const handleCheck = (id) => {
     // Recreate the list of items from default state by checking if an item is checked by the user. Swap the checked status if it is checked and return the same item if it is not checked.
     const listItems = items.map((item) => item.id === id ? { ...item, checked: !item.checked } : item)
-    setAndSaveItems(listItems);
+    setItems(listItems);
   }
 
   const handleSubmit = (e) => {
@@ -40,13 +41,13 @@ function App() {
   //   e.preventDefault();
   //   if (!e.target.value) return;
   //   const listItems = items.filter((item) => item.item.contains(e.target.value))
-  //   setAndSaveItems(listItems);
+  //   setItems(listItems);
   // }
 
   const handleDelete = (id) => {
     // console.log(id)
     const listItems = items.filter((item) => item.id !== id)
-    setAndSaveItems(listItems);
+    setItems(listItems);
   }
 
   return (
