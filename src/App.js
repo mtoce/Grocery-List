@@ -12,10 +12,29 @@ function App() {
   const [items, setItems] = useState([])
   const [newItem, setNewItem] = useState('')
   const [search, setSearch] = useState('')
+  const [fetchError, setFetchError] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    localStorage.setItem('shoppinglist', JSON.stringify(items))
-  }, [items])
+    const fetchItems = async () => {
+      try {
+        const response = await fetch(API_URL)
+        if (!response.ok) throw Error('Did not receive expected data')
+        const listItems = await response.json()
+        setItems(listItems)
+        setFetchError(null)
+      } catch (err) {
+        setFetchError(err.message)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    setTimeout(() => {
+      fetchItems()
+    }, 2000)
+    // (async () => await fetchItems())() // used for an async function with a return value (not needed here)
+    // [] means useEffect will only operate at load time. Whatever is inside the brackets determines when useEffect will run. If we put our items array in, it would run every time the items array changed. (Which we don't want in this case since we're using useEffect to load out initial array. That could cause an infinite loop.)
+  }, [])
 
   const addItem = (item) => {
     const id = items.length ? items[items.length - 1].id + 1 : 1;
@@ -62,12 +81,16 @@ function App() {
         search={search}
         setSearch={setSearch}
       />
-      <Content 
-        items={items.filter(item => ((item.item).toLowerCase()).includes(search.toLowerCase()))}
-        setItems={setItems}
-        handleCheck={handleCheck}
-        handleDelete={handleDelete}
-      />
+      <main>
+        { isLoading && <p style={{ color: "mediumblue", paddingTop: "1rem" }}>Loading Items...</p> }
+        { fetchError && <p style={{ color: "red", paddingTop: "1rem" }}>{`Error: ${fetchError}`}</p> }
+        {!fetchError && !isLoading && <Content 
+          items={items.filter(item => ((item.item).toLowerCase()).includes(search.toLowerCase()))}
+          setItems={setItems}
+          handleCheck={handleCheck}
+          handleDelete={handleDelete}
+        />}
+      </main>
       <Footer length={items.length}/>
     </div>
   );

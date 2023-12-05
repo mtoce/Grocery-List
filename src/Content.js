@@ -4,7 +4,7 @@ const Content = ({ items, handleCheck, handleDelete }) => {
 
 
   return (
-    <main>
+    <>
         {/* If there are items in the list (if it has a length not equal to 0), Show the list of items */}
         { items.length ? (
             <ItemList 
@@ -18,7 +18,7 @@ const Content = ({ items, handleCheck, handleDelete }) => {
                 style={{ marginTop: '2rem' }}
             >There are no items in the shopping list.</p>
         )}
-    </main>
+    </>
   )
 }
 
